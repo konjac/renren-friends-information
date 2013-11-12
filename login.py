@@ -4,6 +4,9 @@ import urllib2
 import cookielib
 import re
 import time
+import login
+import jquery
+
 def open(email, password):
 
     cookie = cookielib.CookieJar()
@@ -11,8 +14,9 @@ def open(email, password):
     urllib2.install_opener(opener)
 
     html = urllib2.urlopen('http://m.renren.com').read()
-    img = re.findall(r'<img src="([\S]*)"', html)[0]
-    verifykey = re.findall(r'name="verifykey" value="([\S]*)"', html)[0]
+    img = jquery.query(html, "img")[1].attrib['src'];
+    
+    verifykey = jquery.query(html, "input[name=verifykey]")[0].attrib['value']
     
     print img
     verifycode = raw_input("please visit the above url in your browser, and type the verify code on the page:\n")
